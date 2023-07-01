@@ -21,6 +21,6 @@ test your GameNite game natively.
 - Use the built in `send_message` function.
 - Run a controlpads test server on your development machine:
   https://github.com/RecBox-Games/controlpad_test_server
-- Connect browsers on your computer or phone to `<your-lan_ip>:3000`.
+- Connect browsers on your computer or phone to `<your-lan-ip>:3000`.
 - Join our discord to get help and learn more about developing for GameNite:
   https://discord.gg/JN6NrUcBhr
