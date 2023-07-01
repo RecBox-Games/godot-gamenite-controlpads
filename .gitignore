@@ -1,0 +1,6 @@
+*~
+*.os
+
+demo/
+
+.sconsign.dblite
