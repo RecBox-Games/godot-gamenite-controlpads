@@ -24,3 +24,12 @@ test your GameNite game natively.
 - Connect browsers on your computer or phone to `<your-lan-ip>:3000`.
 - Join our discord to get help and learn more about developing for GameNite:
   https://discord.gg/JN6NrUcBhr
+
+
+  ## Building from source
+  `cd godot-cpp`
+  `git submodule update --init`
+  `godot --dump-extension-api extension_api.json`
+  `scons platform=<platform> -j4 custom_api_file=extension_api.json`
+  `cd ..`
+  `scons platform=<platform>` // you may want to add `target=template_release` flag
