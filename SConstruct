@@ -13,7 +13,7 @@ env = SConscript("godot-cpp/SConstruct")
 # - CPPDEFINES are for pre-processor defines
 # - LINKFLAGS are for linking flags
 
-env.Append(LIBPATH = ['./'])
+env.Append(LIBPATH = ['./recbox-bin/'])
 if env["platform"] == "linux":
     env.Append(LIBS = ['c_controlpads'])
 elif env["platform"] == "windows":
