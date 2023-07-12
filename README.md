@@ -26,10 +26,13 @@ test your GameNite game natively.
   https://discord.gg/JN6NrUcBhr
 
 
-  ## Building from source
-  `cd godot-cpp`
-  `git submodule update --init`
-  `godot --dump-extension-api extension_api.json`
-  `scons platform=<platform> -j4 custom_api_file=extension_api.json`
-  `cd ..`
-  `scons platform=<platform>` // you may want to add `target=template_release` flag
+## Building from source
+```
+cd godot-cpp
+git submodule update --init
+godot --dump-extension-api extension_api.json
+scons platform=<platform> -j4 custom_api_file=extension_api.json
+cd ..
+scons platform=<platform>` // you may want to add `target=template_release` flag
+```
+You may want to add `target=template_release` flag to your final scons command
