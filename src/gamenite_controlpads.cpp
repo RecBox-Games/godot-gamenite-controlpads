@@ -53,7 +53,7 @@ void GameNiteControlpads::_process(double delta) {
         // copy message contents into strings owned by this C++ code
         for (int j = 0; j < this->new_messages.len; j++) {
             String client = String(clients.ptr[i]);
-            String msg = String(this->new_messages.ptr[i]);
+            String msg = String(this->new_messages.ptr[j]);
             struct client_msg cm = client_msg { client, msg };
             this->messages.push(cm);
         }
