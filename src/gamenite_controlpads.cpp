@@ -7,6 +7,19 @@
 
 using namespace godot;
 
+char* createNewCString(const char* original) {
+    // Determine the length of the original C-string
+    size_t length = std::strlen(original);
+    
+    // Allocate new memory for the new C-string
+    char* newCString = new char[length + 1];
+    
+    // Copy content from the original C-string to the new C-string
+    std::strcpy(newCString, original);
+    
+    return newCString;
+}
+
 void GameNiteControlpads::send_client_message(String client, String message) {
     CharString client_buf = client.ascii();
     const char * c_client = client_buf.get_data();
@@ -51,12 +64,23 @@ void GameNiteControlpads::_process(double delta) {
         // get the messages meant for client i
         CP_CHECK(get_messages(clients.ptr[i], &this->new_messages));
         // copy message contents into strings owned by this C++ code
-        for (int j = 0; j < this->new_messages.len; j++) {
-            String client = String(clients.ptr[i]);
-            String msg = String(this->new_messages.ptr[j]);
+	int j;
+        for (j = 0; j < this->new_messages.len; j++) {
+	    char* persistent_c_client = createNewCString(clients.ptr[i]);
+            String client = String(persistent_c_client);
+	    char* persistent_c_msg = createNewCString(new_messages.ptr[j]);
+            String msg = String(persistent_c_msg);
             struct client_msg cm = client_msg { client, msg };
             this->messages.push(cm);
         }
+	/*
+	  if (j != 0) {
+	  printf("client<%s>\n", clients.ptr[i]);
+	  for (j = 0; j < this->new_messages.len; j++) {
+	  printf("    msg<%s>\n", new_messages.ptr[j]);
+	  }
+	  }
+	*/
         // now that we have copies, tell the library (Rust code) to free the
         // original messages
         free_strvec(this->new_messages);
