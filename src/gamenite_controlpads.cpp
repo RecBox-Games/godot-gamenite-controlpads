@@ -55,36 +55,44 @@ void GameNiteControlpads::_process(double delta) {
     bool changed;
     CP_CHECK(clients_changed(&changed));
     if (changed) {
+        printf("clients changed\n");
         free_strvec(this->clients);
         CP_CHECK(get_client_handles(&this->clients));
     }
+
     // ---- messages ----
     // loop through each client
     for (int i = 0; i < this->clients.len; i++) {
         // get the messages meant for client i
         CP_CHECK(get_messages(clients.ptr[i], &this->new_messages));
         // copy message contents into strings owned by this C++ code
-	int j;
+        int j;
         for (j = 0; j < this->new_messages.len; j++) {
-	    char* persistent_c_client = createNewCString(clients.ptr[i]);
+            printf("received <%s> from <%s>\n", new_messages.ptr[j], clients.ptr[i]);
+            // Warning: potential memory leak
+            char* persistent_c_client = createNewCString(clients.ptr[i]);
             String client = String(persistent_c_client);
-	    char* persistent_c_msg = createNewCString(new_messages.ptr[j]);
+            // Warning: potential memory leak
+            char* persistent_c_msg = createNewCString(new_messages.ptr[j]);
             String msg = String(persistent_c_msg);
             struct client_msg cm = client_msg { client, msg };
             this->messages.push(cm);
         }
-	/*
-	  if (j != 0) {
-	  printf("client<%s>\n", clients.ptr[i]);
-	  for (j = 0; j < this->new_messages.len; j++) {
-	  printf("    msg<%s>\n", new_messages.ptr[j]);
-	  }
-	  }
-	*/
+
+        /*
+        if (j != 0) {
+            printf("client<%s>\n", clients.ptr[i]);
+            for (j = 0; j < this->new_messages.len; j++) {
+                printf("    msg<%s>\n", new_messages.ptr[j]);
+            }
+        }
+        */
+
         // now that we have copies, tell the library (Rust code) to free the
         // original messages
         free_strvec(this->new_messages);
     }
+
     // ---- emit ----
     // we only output one message at a time even if we got multiple messages
     // this frame (TODO: we may need to change this later to improve
