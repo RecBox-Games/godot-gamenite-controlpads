@@ -17,14 +17,11 @@ env.Append(LIBPATH = ['./recbox-bin/'])
 if env["platform"] == "linux":
     env.Append(LIBS = ['c_controlpads'])
 elif env["platform"] == "windows":
-    env.Append(LIBS = ['c_controlpads', 'Ws2_32', 'Advapi32', 'Userenv', 'NtDll', 'Bcrypt'])
+    env.Append(LIBS = ['c_controlpads', 'ws2_32', 'advapi32', 'userenv', 'ntdll', 'bcrypt'])
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
 env.Append(CPPPATH=["src/"])
 sources = Glob("src/*.cpp")
-
-
-
 
 if env["platform"] == "macos":
     library = env.SharedLibrary(
