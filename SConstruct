@@ -13,18 +13,17 @@ env = SConscript("godot-cpp/SConstruct")
 # - CPPDEFINES are for pre-processor defines
 # - LINKFLAGS are for linking flags
 
-env.Append(LIBPATH = ['./recbox-bin/'])
+env.Append(LIBPATH = ['recbox-bin/'])
 if env["platform"] == "linux":
     env.Append(LIBS = ['c_controlpads'])
 elif env["platform"] == "windows":
-    env.Append(LIBS = ['c_controlpads', 'Ws2_32', 'Advapi32', 'Userenv', 'NtDll', 'Bcrypt'])
+    lib_file = os.path.join(Dir('recbox-bin').abspath, 'c_controlpads.lib')
+    env.Append(LINKFLAGS = [lib_file])
+    env.Append(LIBS = ['ws2_32', 'advapi32', 'userenv', 'ntdll', 'bcrypt'])
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
 env.Append(CPPPATH=["src/"])
 sources = Glob("src/*.cpp")
-
-
-
 
 if env["platform"] == "macos":
     library = env.SharedLibrary(
