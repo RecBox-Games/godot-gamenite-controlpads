@@ -16,8 +16,10 @@ env = SConscript("godot-cpp/SConstruct")
 env.Append(LIBPATH = ['./recbox-bin/'])
 if env["platform"] == "linux":
     env.Append(LIBS = ['c_controlpads'])
-elif env["platform"] == "windows":
+elif env["platform"] == "windows":     
     env.Append(LIBS = ['wc_controlpads', 'ws2_32', 'advapi32', 'userenv', 'ntdll', 'bcrypt', 'stdc++', 'gcc'])
+elif env["platform"] == "macos":
+    env.Append(LIBS=['mc_controlpads'])      
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
 env.Append(CPPPATH=["src/"])
