@@ -25,7 +25,7 @@ void GameNiteControlpads::send_client_message(String client, String message) {
     const char * c_client = client_buf.get_data();
     CharString message_buf = message.ascii();
     const char * c_message = message_buf.get_data();
-    printf("sending <%s> to <%s>\n", c_message, c_client);
+    //printf("sending <%s> to <%s>\n", c_message, c_client);
     fflush(stdout);
     Err ret = send_message(c_client, c_message);
     CP_CHECK(ret);
@@ -55,7 +55,7 @@ void GameNiteControlpads::_process(double delta) {
     bool changed;
     CP_CHECK(clients_changed(&changed));
     if (changed) {
-        printf("clients changed\n");
+        //printf("clients changed\n");
         free_strvec(this->clients);
         CP_CHECK(get_client_handles(&this->clients));
     }
@@ -68,7 +68,7 @@ void GameNiteControlpads::_process(double delta) {
         // copy message contents into strings owned by this C++ code
         int j;
         for (j = 0; j < this->new_messages.len; j++) {
-            printf("received <%s> from <%s>\n", new_messages.ptr[j], clients.ptr[i]);
+            //printf("received <%s> from <%s>\n", new_messages.ptr[j], clients.ptr[i]);
             // Warning: potential memory leak
             char* persistent_c_client = createNewCString(clients.ptr[i]);
             String client = String(persistent_c_client);
@@ -94,10 +94,7 @@ void GameNiteControlpads::_process(double delta) {
     }
 
     // ---- emit ----
-    // we only output one message at a time even if we got multiple messages
-    // this frame (TODO: we may need to change this later to improve
-    // performance)
-    if (this->messages.size() > 0) {
+    while (this->messages.size() > 0) {
         struct client_msg cm = this->messages.front();
         this->messages.pop();
         emit_signal("message_received", cm.client, cm.msg);
